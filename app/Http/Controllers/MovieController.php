@@ -25,7 +25,7 @@ class MovieController extends Controller
         // $omdbResp = $omdb->searchByTitle('martian');
 
         // dd($omdbResp);
-        dd(Movie::all()
+        dd(Movie::all();
     }
 
     /**
