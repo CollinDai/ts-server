@@ -8,14 +8,13 @@ class BoxOfficeService {
 		return BoxOfficeService::extractMovieNames($year, $week);
 	}
 
-	public static function getAllWeekly() {
-		$year = date("Y");
-		$week = date("W")-2;
+	public static function getAllWeekly($year, $week) {
 		$movies = BoxOfficeService::extractMovieNames($year, $week);
 		return array('year'=>$year, 'week'=>$week, 'movies'=>$movies);
 	}
 
 	private static function extractMovieNames($year, $week) {
+		libxml_use_internal_errors(true);
 		$url = 'http://www.boxofficemojo.com/weekly/chart/?yr='.$year.'&wk='.$week.'&p=.htm';
 		$data = file_get_contents($url);
 
@@ -27,10 +26,13 @@ class BoxOfficeService {
 		$nodes = $xpath->query('//div[@id="body"]/center/center/table//table[1]//tr/td[3]');
 
 		$arr = array();
-
-		foreach($nodes as $cell) {
-		    $arr[] = $cell->textContent;
+		for ($idx = 1; $idx<31; $idx++) {
+			$arr[] = $nodes[$idx]->textContent;
 		}
+
+		// foreach($nodes as $cell) {
+		//     $arr[] = $cell->textContent;
+		// }
 		return $arr;
 	}
 }

@@ -1,5 +1,5 @@
 <?php namespace App\Helpers;
-
+use Log;
 /** 
 * Send a POST requst using cURL 
 * @param string $url to request 
@@ -41,6 +41,8 @@ class CURLHelper {
 	public static function get($url, array $get = NULL, array $options = array()) 
 	{    
 		$curlUrl = $url;
+		Log::debug('CURLHelper#url: '.$url);
+		Log::debug('CURLHelper#param: ', $get);
 		if (!empty($get)) {
 			$curlUrl = $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query($get);
 		}
@@ -48,7 +50,7 @@ class CURLHelper {
 	        CURLOPT_URL => $curlUrl, 
 	        CURLOPT_HEADER => 0, 
 	        CURLOPT_RETURNTRANSFER => TRUE, 
-	        CURLOPT_TIMEOUT => 4 
+	        CURLOPT_TIMEOUT => 15
 	    ); 
 	    
 	    $ch = curl_init(); 

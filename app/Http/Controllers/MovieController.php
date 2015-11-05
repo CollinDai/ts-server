@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Models\Movie;
+use App\TheaterSubtitleManager;
 class MovieController extends Controller
 {
     /**
@@ -16,16 +17,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        // $bos = new BoxOfficeService();
-        // dd($bos->topTen());
-        // header('Content-Type: text/plain; charset=utf-8');
-        // $sub = new SubtitleService();
-        // $result = $sub->test();
-        // $omdb = new OmdbService();
-        // $omdbResp = $omdb->searchByTitle('martian');
-
-        // dd($omdbResp);
-        dd(Movie::all();
+        $topTen = TheaterSubtitleManager::getTopTenWeekly();
+        return $topTen;
     }
 
     /**

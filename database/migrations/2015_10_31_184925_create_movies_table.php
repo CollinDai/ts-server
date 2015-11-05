@@ -20,6 +20,7 @@ class CreateMoviesTable extends Migration
             $table->string('douban_rating');
             $table->string('imdb_rating');
             $table->string('poster_url',255);
+            $table->integer('ranking');
             $table->timestamps();
         });
     }
