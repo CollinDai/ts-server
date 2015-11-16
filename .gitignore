@@ -15,3 +15,8 @@ storage/
 
 #jetbrain IDT specific
 .idea/
+
+# for heroku
+package.json
+phpspec.yml
+gulpfile.js
