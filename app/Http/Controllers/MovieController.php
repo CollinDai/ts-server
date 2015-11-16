@@ -7,18 +7,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Services\Movie\SubtitleService;
 use App\TheaterSubtitleManager;
-class MovieController extends Controller
+
+use Cache;
+class MovieController extends ApiController
 {
     /**
      * Display a listing of the resource.
+     * [{"title":"The Martian","poster_url":"http://poster.url"}]
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $topTen = TheaterSubtitleManager::getTopTenWeekly();
+        // $sub = new SubtitleService();
+        // $sub->login();
+        // $result = $sub->searchSubtitle('tt0816692');
         return $topTen;
+        // return $sub->getToken();
     }
 
     /**
