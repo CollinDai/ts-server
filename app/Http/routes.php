@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('movie', 'MovieController@index');
+
+Route::get('movie/refresh', 'MovieController@refresh');

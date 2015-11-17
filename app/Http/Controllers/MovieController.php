@@ -8,9 +8,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use App\Services\Movie\SubtitleService;
+use App\Services\MovieDataService;
 use App\TheaterSubtitleManager;
 
-use Cache;
 class MovieController extends ApiController
 {
     /**
@@ -28,7 +28,9 @@ class MovieController extends ApiController
         return $topTen;
         // return $sub->getToken();
     }
-
+    public function refresh() {
+        MovieDataService::getAllWeekly();
+    }
     /**
      * Show the form for creating a new resource.
      *
