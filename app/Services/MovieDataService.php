@@ -25,7 +25,7 @@ class MovieDataService {
 		$week = date('W')-2;
 		$year = date('Y');
 		$result = BoxOfficeService::getAllWeekly($year, $week);
-		$counts = count($result['movies']);
+		$counts = count($result['movies']) < 50 ? count($result['movies']) : 50;
 		// $counts = 1;
 		for ($idx=0; $idx<$counts; $idx++) {
 			$t = $result['movies'][$idx];

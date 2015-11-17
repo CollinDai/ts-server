@@ -13,7 +13,7 @@ class TheaterSubtitleManager {
 				'poster_url' => $m['poster_url']
 				);
 		}
-			Log::debug($result);
+		Log::debug($result);
 		return $result;
 	}
 }
