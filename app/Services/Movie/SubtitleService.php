@@ -36,24 +36,38 @@ class SubtitleService {
 		return $resp;
 	}
 
-	private function validateIMDbID($imdbId) {
-		$validIID = '';
-		if(starts_with($imdbId, 'tt')) {
-			$validIID = substr($imdbId, 2);
-		} else $validIID = $imdbId;
-		return (int)$validIID;
+    /**
+     * OpenSubtitle allow multiple subtitle download.
+     * For now we only allow one download per call.
+     * @param  array  $subFileIdArray subtitle ids
+     * @return string                 base 64 encoded gzip content
+     */
+	public function downloadSubtitle(array $subFileIdArray) {
+		$resp = $this->xmlrpc_client->call('DownloadSubtitles', array($this->token, $subFileIdArray));
+        $subArray = $resp['data'];
+        if (is_array($subArray)) {
+            $subs_b64_data_from_xmlrpc = $subArray[0]['data'];
+            return gzinflate(substr(base64_decode($subs_b64_data_from_xmlrpc),10));
+        } else {
+            return "Download subtitle error";
+        }
 	}
 
-	public function validateToken($token) {
-		$resp = $this->xmlrpc_client->call('NoOperation', array($token));
-		if (strpos($resp['status'], '200') === false) {
-			$this->login();
-		} else {
-			$this->token = $token;
-		}
-	}
+    private function validateIMDbID($imdbId) {
+        $validIID = '';
+        if(starts_with($imdbId, 'tt')) {
+            $validIID = substr($imdbId, 2);
+        } else $validIID = $imdbId;
+        return (int)$validIID;
+    }
 
-	public function downloadSubtitle($toPath) {
-		
-	}
+    public function validateToken($token) {
+        $resp = $this->xmlrpc_client->call('NoOperation', array($token));
+        if (strpos($resp['status'], '200') === false) {
+            $this->login();
+        } else {
+            $this->token = $token;
+        }
+    }
+
 }
