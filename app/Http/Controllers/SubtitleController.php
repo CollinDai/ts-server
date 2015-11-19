@@ -6,32 +6,25 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Movie;
-use App\Services\Movie\SubtitleService;
-use App\Services\MovieDataService;
-use App\TheaterSubtitleManager;
 
-class MovieController extends ApiController
+use App\Services\Movie\SubtitleService;
+
+class SubtitleController extends ApiController
 {
     /**
      * Display a listing of the resource.
-     * [{"title":"The Martian","poster_url":"http://poster.url"}]
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        $topTen = TheaterSubtitleManager::getTopTenWeekly();
-        return $topTen;
-        // return $sub->getToken();
+        //
     }
-    public function refresh() {
-        MovieDataService::getAllWeekly();
-    }
+
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -41,8 +34,8 @@ class MovieController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -52,19 +45,24 @@ class MovieController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $imdbId
+     * @param  $lanuguage the language
+     * @return Response
      */
-    public function show($id)
+    public function show($imdbId, $languages)
     {
-        //
+        // return $imdbId;
+        $subtitleService = new SubtitleService();
+        $subtitleService->login();
+        $resp = $subtitleService->searchSubtitle($imdbId, $languages);
+        return $this->respond($resp);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -74,9 +72,9 @@ class MovieController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -87,7 +85,7 @@ class MovieController extends ApiController
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {

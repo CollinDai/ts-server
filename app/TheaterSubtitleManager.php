@@ -9,6 +9,7 @@ class TheaterSubtitleManager {
 		// Log::debug($topTenMovies);
 		foreach ($topTenMovies as $m) {
 			$result[] = array(
+				'imdb_id' =>$m['imdb_id'],
 				'title' =>$m['title'],
 				'poster_url' => $m['poster_url']
 				);
