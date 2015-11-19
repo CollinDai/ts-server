@@ -31,6 +31,13 @@ class SubtitleController extends ApiController
         //
     }
 
+    public function download($subFileIds) {
+        $subtitleService = new SubtitleService();
+        $subtitleService->login();
+        $resp = $subtitleService->downloadSubtitle([$subFileIds]);
+        return $this->respond($resp);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -54,7 +61,7 @@ class SubtitleController extends ApiController
         // return $imdbId;
         $subtitleService = new SubtitleService();
         $subtitleService->login();
-        $resp = $subtitleService->searchSubtitle($imdbId, $languages);
+        $resp = $subtitleService->searchSubtitle($imdbId);
         return $this->respond($resp);
     }
 
