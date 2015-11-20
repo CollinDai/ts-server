@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Services\Movie\SubtitleService;
-
+use App\TheaterSubtitleManager as TSM;
 class SubtitleController extends ApiController
 {
     /**
@@ -50,18 +49,22 @@ class SubtitleController extends ApiController
     }
 
     /**
-     * Display the specified resource.
+     * return list of subtitle names from given
+     * languages. If no language given, all 
+     * available subnames will be return
      *
      * @param  int  $imdbId
      * @param  $lanuguage the language
      * @return Response
      */
-    public function show($imdbId, $languages)
+    public function show(Request $request, $imdbId)
     {
         // return $imdbId;
-        $subtitleService = new SubtitleService();
-        $subtitleService->login();
-        $resp = $subtitleService->searchSubtitle($imdbId);
+        $languages = '';
+        if ($request->has('lang')) {
+            $languages = $request->input('lang');
+        }
+        $resp = TSM::searchSubtitle($imdbId, $languages);
         return $this->respond($resp);
     }
 
