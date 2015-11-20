@@ -29,7 +29,7 @@ class SubtitleService {
      * @param string $language split by comma if multiple
      * @return string the zip download link
      */
-	public function searchSubtitle($imdbId, $languages='eng') {
+	public function searchSubtitle($imdbId, $languages='') {
 		$imdbId = $this->validateIMDbID($imdbId);
 		$params = array(array('sublanguageid'=>$languages,'imdbid'=>$imdbId));
 		$resp = $this->xmlrpc_client->call('SearchSubtitles', array($this->token, $params));
