@@ -25,7 +25,7 @@ class TheaterSubtitleManager {
         $resp = $subtitleService->searchSubtitle($imdbId,$languages);
         $subtitles = array();
         if (empty($resp['data'])) {
-        	return 'Error';
+        	return ['Error: no subtitle found'];
         } else {
         	foreach ($resp['data'] as $sub) {
         		$subtitles[] = [
