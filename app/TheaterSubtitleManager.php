@@ -25,7 +25,7 @@ class TheaterSubtitleManager {
     	$resp = $subtitleService->searchSubtitle($imdbId,$languages);
     	$subtitles = array();
     	if (empty($resp['data'])) {
-    		return ['Error: no subtitle found'];
+    		return $subtitles;
     	} else {
     		foreach ($resp['data'] as $sub) {
     			$subtitles[] = [
@@ -35,7 +35,9 @@ class TheaterSubtitleManager {
     			'download_count'=>$sub['SubDownloadsCnt'],
     			'download_link'=>$sub['SubDownloadLink'],
     			'file_size'=>$sub['SubSize'],
-    			'language'=>$sub['LanguageName']
+    			'language'=>$sub['LanguageName'],
+                'ISO639'=>$sub['ISO639'],
+                'ISO639_2'=>$sub['SubLanguageID']
     			];
     		}
     		return $subtitles;
