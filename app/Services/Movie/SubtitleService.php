@@ -11,7 +11,7 @@ class SubtitleService {
 		$this->xmlrpc_client = new XMLRPC_Client(self::URL, false);
 	}
 
-	public function login($username='', $password='', $language='', $useragent = 'OSTestUserAgent') {
+	public function login($username='', $password='', $language='en', $useragent = '') {
 		if (Cache::has('OSToken')) {
 			$this->token = Cache::get('OSToken');
 		} else {
@@ -29,9 +29,10 @@ class SubtitleService {
      * @param string $language split by comma if multiple
      * @return string the zip download link
      */
-	public function searchSubtitle($imdbId, $languages='') {
+	public function searchSubtitle($imdbId, array $languages) {
 		$imdbId = $this->validateIMDbID($imdbId);
-		$params = array(array('sublanguageid'=>$languages,'imdbid'=>$imdbId));
+        $lanStr = implode(',', $languages);
+		$params = array(array('sublanguageid'=>$lanStr,'imdbid'=>$imdbId));
 		$resp = $this->xmlrpc_client->call('SearchSubtitles', array($this->token, $params));
 		return $resp;
 	}

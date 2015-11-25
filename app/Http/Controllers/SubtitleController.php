@@ -34,6 +34,7 @@ class SubtitleController extends ApiController
         $subtitleService = new SubtitleService();
         $subtitleService->login();
         $resp = $subtitleService->downloadSubtitle([$subFileIds]);
+        return $resp;
         return $this->respond($resp);
     }
 
@@ -59,12 +60,16 @@ class SubtitleController extends ApiController
      */
     public function show(Request $request, $imdbId)
     {
-        // return $imdbId;
-        $languages = '';
+        // dd(env('OPENSUBTITLE_USERAGENT'));
+        $languages = [];
         if ($request->has('lang')) {
-            $languages = $request->input('lang');
+            $languages = explode(',',$request->input('lang'));
         }
-        $resp = TSM::searchSubtitle($imdbId, $languages);
+        $raw = FALSE;
+        if ($request->has('raw')) {
+            $raw = $request->input('raw');
+        }
+        $resp = TSM::getSubtitle($imdbId, $languages);
         return $this->respond($resp);
     }
 
