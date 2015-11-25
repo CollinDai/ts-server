@@ -22,13 +22,13 @@ class TheaterSubtitleManager {
 
     public static function getSubtitle($imdbId, $languages=[]) {
         $subs = Subtitle::where('imdb_id', $imdbId);
+        if ($subs->isEmpty()) {
+            MovieDataService::getSubtitle($imdbId, []);
+        }
         if (!empty($languages)) {
             $subs = $subs->whereIn('ISO639_2', $languages);
         }
         $subs = $subs->get();
-        if ($subs->isEmpty()) {
-            MovieDataService::getSubtitle($imdbId, $languages);
-        }
         return $subs;
     }
 }
