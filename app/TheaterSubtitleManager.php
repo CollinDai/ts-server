@@ -25,11 +25,11 @@ class TheaterSubtitleManager {
         	'file_id',
 			'file_name',
 			'file_size',
+			'add_date',
 			'duration',
 			'download_count',
 			'language',
-			'ISO639',
-			'ISO639_2'
+			'ISO639'
         	)->where('imdb_id', $imdbId);
         if (!empty($languages)) {
 	        $subs = $subs->whereIn('ISO639_2', $languages);
