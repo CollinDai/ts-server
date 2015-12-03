@@ -18,7 +18,7 @@ class MovieDataService {
 		self::getWeekly($year, $week);
 	}
 
-	public static function getWeekly($year, $week, $count=20) {
+	public static function getWeekly($year, $week, $count=10) {
 		$result = BoxOfficeService::getAllWeekly($year, $week, $count);
 		for ($idx=0; $idx<$count; $idx++) {
 			$t = $result['movies'][$idx];
@@ -43,8 +43,7 @@ class MovieDataService {
             env('OPENSUBTITLE_USERNAME'),
             env('OPENSUBTITLE_PASSWORD'),
             'en',
-            env('OPENSUBTITLE_USERAGENT')
-        );
+            env('OPENSUBTITLE_USERAGENT'));
     	$resp = $subtitleService->searchSubtitle($imdbId,$languages);
     	$result = [];
     	if (empty($resp['data'])) {
@@ -67,6 +66,22 @@ class MovieDataService {
 			$result[] = $s;
     	}
     	return $result;
+	}
+
+	public static function downloadSubtitle($subId) {
+		$subtitleService = new SubtitleService();
+        $subtitleService->login(
+        	env('OPENSUBTITLE_USERNAME'),
+            env('OPENSUBTITLE_PASSWORD'),
+            'en',
+            env('OPENSUBTITLE_USERAGENT'));
+        $resp = $subtitleService->downloadSubtitle([$subId]);
+        if ($resp !== '') {
+	        $sub = Subtitle::find($subId);
+	        $sub->content = $resp;
+	        $sub->save();
+	    }
+        return $resp;
 	}
 
 }

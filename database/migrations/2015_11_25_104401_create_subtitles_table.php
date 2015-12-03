@@ -25,6 +25,7 @@ class CreateSubtitlesTable extends Migration
             $table->string('ISO639_2');
             $table->integer('download_count');
             $table->integer('file_size');
+            $table->mediumText('content')->nullable();
             $table->timestamps();
         });
     }

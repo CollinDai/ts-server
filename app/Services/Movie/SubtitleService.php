@@ -50,7 +50,7 @@ class SubtitleService {
             $subs_b64_data_from_xmlrpc = $subArray[0]['data'];
             return gzinflate(substr(base64_decode($subs_b64_data_from_xmlrpc),10));
         } else {
-            return "Download subtitle error";
+            return '';
         }
 	}
 

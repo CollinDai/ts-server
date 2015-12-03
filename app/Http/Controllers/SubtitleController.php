@@ -30,12 +30,10 @@ class SubtitleController extends ApiController
         //
     }
 
-    public function download($subFileIds) {
-        $subtitleService = new SubtitleService();
-        $subtitleService->login();
-        $resp = $subtitleService->downloadSubtitle([$subFileIds]);
-        return $resp;
-        return $this->respond($resp);
+    public function download($subFileId) {
+        
+        return TSM::downloadSubtitle($subFileId);
+        // return $this->respond($resp);
     }
 
     /**
