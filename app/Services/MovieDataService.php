@@ -46,10 +46,10 @@ class MovieDataService {
             env('OPENSUBTITLE_USERAGENT')
         );
     	$resp = $subtitleService->searchSubtitle($imdbId,$languages);
-    	if (empty($resp['data'])) {
-    		return;
-    	}
     	$result = [];
+    	if (empty($resp['data'])) {
+    		return $result;
+    	}
     	foreach ($resp['data'] as $sub) {
     		$s = new Subtitle();
     		$s->imdb_id = $imdbId;
