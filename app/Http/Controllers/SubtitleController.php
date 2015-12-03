@@ -32,7 +32,11 @@ class SubtitleController extends ApiController
 
     public function download($subFileIds) {
         $subtitleService = new SubtitleService();
-        $subtitleService->login();
+        $subtitleService->login(
+            env('OPENSUBTITLE_USERNAME'),
+            env('OPENSUBTITLE_PASSWORD'),
+            'en',
+            env('OPENSUBTITLE_USERAGENT'));
         $resp = $subtitleService->downloadSubtitle([$subFileIds]);
         return $resp;
         return $this->respond($resp);
@@ -51,8 +55,9 @@ class SubtitleController extends ApiController
 
     /**
      * return list of subtitle names from given
-     * languages. If no language given, all 
-     * available subnames will be return
+     * imdb id and languages. If no language 
+     * given, all available subnames will 
+     * be return
      *
      * @param  int  $imdbId
      * @param  $lanuguage the language
