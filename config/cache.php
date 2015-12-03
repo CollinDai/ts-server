@@ -41,6 +41,12 @@ return [
             'table'  => 'cache',
             'connection' => 'mysql',
         ],
+        
+        'herokuDatabase' => [
+            'driver' => 'database',
+            'table' => 'cache',
+            'connectoin' => 'clearDB'
+        ],
 
         'file' => [
             'driver' => 'file',

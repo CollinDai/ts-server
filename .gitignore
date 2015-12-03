@@ -8,7 +8,7 @@ app/storage/
 # Laravel 5 & Lumen specific
 # comment this for heroku error
 # bootstrap/cache/
-storage/
+# storage/
 .env.*.php
 .env.php
 .env
