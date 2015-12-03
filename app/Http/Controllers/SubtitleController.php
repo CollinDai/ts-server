@@ -60,7 +60,6 @@ class SubtitleController extends ApiController
      */
     public function show(Request $request, $imdbId)
     {
-        // dd(env('OPENSUBTITLE_USERAGENT'));
         $languages = [];
         if ($request->has('lang')) {
             $languages = explode(',',$request->input('lang'));
