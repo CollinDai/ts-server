@@ -1,5 +1,5 @@
 <?php namespace App\Helpers;
-
+use App\Helpers\CURLHelper as CURL;
 class XMLRPC_Client {
     private $url;
     function __construct($url, $autoload=true) {
@@ -11,16 +11,12 @@ class XMLRPC_Client {
         }
     }
     public function call($method, $params = null) {
-        $post = xmlrpc_encode_request($method, $params);
-        $context = stream_context_create(array(
-        	'http' => array(
-			    'method' => "POST",
-			    'header' => "Content-Type: text/xml;charset=UTF-8",
-			    'content' => $post
-				)
-			)
-        );
-        // return $post;
-        return xmlrpc_decode(file_get_contents($this->url, false, $context));
+        $postData = xmlrpc_encode_request($method, $params);
+        $httpHeader = array('Content-Type: text/xml;charset=UTF-8');
+        $curlResult = CURL::post($this->url, $postData, $httpHeader);
+        if ($curlResult === 'Error') {
+            return [];
+        }
+        return xmlrpc_decode($curlResult);
     }
 }

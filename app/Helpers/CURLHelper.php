@@ -3,38 +3,41 @@ use Log;
 /** 
 * Send a POST requst using cURL 
 * @param string $url to request 
-* @param array $post values to send 
+* @param array $post parameters to send 
 * @param array $options for cURL 
 * @return string 
 */ 
 class CURLHelper {
-	public static function post($url, array $post = NULL, array $options = array()) 
+	public static function post($url, $post, array $header = array()) 
 	{ 
-	    $defaults = array( 
-	        CURLOPT_POST => 1, 
-	        CURLOPT_HEADER => 0, 
+	    $options = array( 
+	        CURLOPT_POST => TRUE, 
+	        CURLOPT_HEADER => FALSE, 
 	        CURLOPT_URL => $url, 
-	        CURLOPT_FRESH_CONNECT => 1, 
-	        CURLOPT_RETURNTRANSFER => 1, 
-	        CURLOPT_FORBID_REUSE => 1, 
-	        CURLOPT_TIMEOUT => 10, 
-	        CURLOPT_POSTFIELDS => http_build_query($post) 
+	        CURLOPT_FRESH_CONNECT => TRUE, 
+	        CURLOPT_RETURNTRANSFER => TRUE, 
+	        CURLOPT_FORBID_REUSE => TRUE, 
+	        CURLOPT_TIMEOUT => 10,
+	        CURLOPT_HTTPHEADER => $header,
+	        CURLOPT_POSTFIELDS => $post
 	    ); 
 
 	    $ch = curl_init(); 
-	    curl_setopt_array($ch, ($options + $defaults)); 
+	    curl_setopt_array($ch, $options); 
 	    if( ! $result = curl_exec($ch)) 
 	    { 
-	        trigger_error(curl_error($ch)); 
+	        Log::error(curl_error($ch)); 
+	        return 'Error';
 	    } 
 	    curl_close($ch); 
 	    return $result; 
 	} 
 
 	/** 
-	* Send a GET requst using cURL 
+	* Send a GET requst using cURL
+	* GET is default when CURLOPT_POST is not set to true
 	* @param string $url to request 
-	* @param array $get values to send 
+	* @param array $get parameters to send 
 	* @param array $options for cURL 
 	* @return string 
 	*/ 

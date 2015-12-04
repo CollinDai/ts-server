@@ -8,7 +8,6 @@ class TheaterSubtitleManager {
 	public static function getTopTenWeekly($lan='eng') {
 		$topTenMovies = Movie::orderBy('ranking')->take(10)->get();
 		$result = array();
-		// Log::debug($topTenMovies);
 		foreach ($topTenMovies as $m) {
 			$result[] = array(
 				'imdb_id' =>$m['imdb_id'],
@@ -34,7 +33,6 @@ class TheaterSubtitleManager {
         if (!empty($languages)) {
 	        $subs = $subs->whereIn('ISO639_2', $languages);
 	    }
-        // dd($subs->get());
         $subs = $subs->get();
         if ($subs->isEmpty()) {
             $subs = MovieDataService::getSubtitle($imdbId, $languages);
