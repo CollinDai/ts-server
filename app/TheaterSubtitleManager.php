@@ -12,10 +12,12 @@ class TheaterSubtitleManager {
 			$result[] = array(
 				'imdb_id' =>$m['imdb_id'],
 				'title' =>$m['title'],
-				'poster_url' => $m['poster_url']
+				'poster_url' => $m['poster_url'],
+				'douban_rating' => $m['douban_rating'],
+				'imdb_rating' => $m['imdb_rating']
 				);
 		}
-		Log::debug($result);
+		dd($result);
 		return $result;
 	}
 
