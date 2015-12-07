@@ -17,7 +17,6 @@ class TheaterSubtitleManager {
 				'imdb_rating' => $m['imdb_rating']
 				);
 		}
-		dd($result);
 		return $result;
 	}
 
