@@ -28,6 +28,11 @@ class MovieController extends ApiController
     public function refresh() {
         MovieDataService::getAllWeekly();
     }
+
+    public function search(Request $request) {
+//        dd($request);
+        return "yes";
+    }
     /**
      * Show the form for creating a new resource.
      *

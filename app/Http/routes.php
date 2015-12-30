@@ -22,3 +22,5 @@ Route::get('movie/refresh', 'MovieController@refresh');
 Route::get('subtitle/download/{subFileId}', 'SubtitleController@download');
 
 Route::get('subtitle/{imdbId}', 'SubtitleController@show');
+
+Route::get('movie/search', 'MovieController@search');

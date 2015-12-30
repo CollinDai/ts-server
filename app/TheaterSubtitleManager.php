@@ -21,6 +21,7 @@ class TheaterSubtitleManager {
 
     public static function getSubtitle($imdbId, $languages=[]) {
         $subs = Subtitle::select(
+        	'imdb_id',
         	'file_id',
 			'file_name',
 			'file_size',
@@ -36,6 +37,8 @@ class TheaterSubtitleManager {
         $subs = $subs->get();
         if ($subs->isEmpty()) {
             $subs = MovieDataService::getSubtitle($imdbId, $languages);
+        } else {
+        	$subs = $subs->all();
         }
         return $subs;
     }
