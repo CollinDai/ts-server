@@ -13,7 +13,6 @@ class OmdbService {
 		$params = array(
 			'plot'=>'short',
 			'r'=>'json',
-			'y'=>date("Y"),
 			't'=>$title
 			);
 		$response = CURL::get($url, $params);

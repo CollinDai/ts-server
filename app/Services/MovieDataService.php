@@ -6,14 +6,13 @@ use App\Services\Movie\BoxOfficeService;
 use App\Services\Movie\OmdbService;
 use App\Services\Movie\DoubanService;
 use App\Services\Movie\SubtitleService;
+use App\Services\Movie\TmdbService;
+
 class MovieDataService {
-	public static function getTopTenWeekly() {
-		$week = date('W')-2;
-		$year = date('Y');
-		getWeekly($year, $week, 10);
-	}
+
 	public static function getAllWeekly() {
 		$week = date('W')-2;
+        if ($week <= 0) $week = 0;
 		$year = date('Y');
 		self::getWeekly($year, $week);
 	}
@@ -32,7 +31,10 @@ class MovieDataService {
 			$movie->poster_url = $omdbJson['Poster'];
 			$movie->douban_rating = DoubanService::getDoubanRatingByImdbId($movie->imdb_id);
 			$movie->ranking = $idx + 1;
-		
+		    $movie->backdrop_url = TmdbService::getBackdropImageUrl(env('TMDB_API_KEY'),$movie->imdb_id);
+            if ($movie->imdb_id === 'tt4354930') {
+                dd($movie);
+            }
 			$movie->save();
 		}
 	}
@@ -84,4 +86,8 @@ class MovieDataService {
         return $resp;
 	}
 
+	public static function getMovieBackdropUrl($imdbId, $size=780) {
+		$apiKey = env('TMDB_API_KEY');
+		return TmdbService::getBackdropImageUrl($imdbId, $size, $apiKey);
+	}
 }

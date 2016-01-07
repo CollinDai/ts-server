@@ -13,6 +13,7 @@ class TheaterSubtitleManager {
 				'imdb_id' =>$m['imdb_id'],
 				'title' =>$m['title'],
 				'poster_url' => $m['poster_url'],
+				'backdrop_url' =>$m['backdrop_url'],
 				'douban_rating' => $m['douban_rating'],
 				'imdb_rating' => $m['imdb_rating']
 				);
