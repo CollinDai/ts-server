@@ -1,6 +1,11 @@
 <?php namespace App\Services\Movie;
 use App\Helpers\CURLHelper as CURL;
 
+/**
+ * Api request limit: 40 per 10 seconds
+ * Class TmdbService
+ * @package App\Services\Movie
+ */
 class TmdbService {
     private static $baseUrl = 'http://image.tmdb.org/t/p/';
     private static $apiUrl = 'http://api.themoviedb.org/3/';

@@ -26,7 +26,7 @@ class MovieController extends ApiController
         // return $sub->getToken();
     }
     public function refresh() {
-        MovieDataService::getAllWeekly();
+        MovieDataService::getTopTen();
     }
 
     public function search(Request $request) {

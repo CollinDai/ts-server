@@ -1,31 +1,45 @@
 <?php namespace App\Services\Movie;
 
 use Log;
+use \DateTime;
 use App\Helpers\CURLHelper as CURL;
 /**
  * TODO intelligently return the search result order by
  * release year descendently
  */
 class OmdbService {
+    private static $URL = 'http://www.omdbapi.com/';
 	public static function searchByTitle($title) {
-		$title = OmdbService::removeYearFromTitle($title);
-		$url = 'http://www.omdbapi.com/';
-		$params = array(
-			'plot'=>'short',
-			'r'=>'json',
-			't'=>$title
-			);
-		$response = CURL::get($url, $params);
-		Log::debug($response);
-		return json_decode($response, true);
+		$year = date('Y');
+		for ($idx=0; $idx<3; $idx++) {
+			$omdbRespJson = self::search($title, $year-$idx);
+			if (self::isMovieJustReleased($omdbRespJson)) {
+				return $omdbRespJson;
+			}
+		}
+		return null;
 	}
 
-	public static function getImdbIdByTitle($title) {
+    public static function searchByImdb($imdbId) {
+        $params = array(
+            'i'=>$imdbId,
+            'r'=>'json',
+            'plot'=>'short'
+        );
+        $response = CURL::get(self::$URL, $params);
+        return json_decode($response, true);
+    }
+
+	private static function search($title, $year) {
 		$title = OmdbService::removeYearFromTitle($title);
-		$omdbResp = searchByTitle($title);
-		$omdbJson = json_decode($omdbResp, true);
-		Log::debug($omdbJson);
-		return $omdbJson['imdbID'];
+		$params = array(
+				'plot'=>'short',
+				'r'=>'json',
+				'y'=>$year,
+				't'=>$title
+		);
+		$response = CURL::get(self::$URL, $params);
+		return json_decode($response, true);
 	}
 
 	public static function removeYearFromTitle($title) {
@@ -36,14 +50,21 @@ class OmdbService {
 			return trim($title);
 		}
 	}
-
-	public static function getPosterUrlByTitle($title) {
-
+	private static function isMovieJustReleased($omdbRespJson)
+	{
+		return $omdbRespJson['Response'] !== 'False' && self::isJustReleased($omdbRespJson);
 	}
 
-
-
-	public static function getImdbRatingByTitle($title) {
-
+	private static function isJustReleased($omdbResp) {
+		if ($omdbResp['Released']==='N/A') {
+			return false;
+		} else {
+			$releaseDate = DateTime::createFromFormat('d M Y', $omdbResp['Released']);
+            $releaseDateStr = $releaseDate->format('Y-m-d');
+            $releaseYear = $releaseDate->format('Y');
+            $todayStr = date('Y-m-d');
+            $todayYear = date('Y');
+			return $releaseDateStr <= $todayStr && $releaseYear >= ($todayYear - 1);
+		}
 	}
 }
