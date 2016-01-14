@@ -5,33 +5,11 @@ use App\Models\Movie;
 use App\Services\Movie\BoxOfficeService;
 use App\Services\Movie\OmdbService;
 use App\Services\Movie\DoubanService;
-use App\Services\Movie\TmdbService;
+use App\Services\Movie\TmdbService as TMDB;
 use App\Services\Movie\ImdbBoxOfficeService as IMDB;
 
 class MovieDataService
 {
-
-    public static function getAllWeekly()
-    {
-        $week = date('W');
-        $year = date('Y');
-        self::getWeekly($year, $week);
-    }
-
-    public static function getWeekly($year, $week, $count = 10)
-    {
-        $result = BoxOfficeService::getAllWeekly($year, $week, $count);
-        for ($idx = 0; $idx < $count; $idx++) {
-            $title = $result['movies'][$idx];
-            $movie = self::setupBasicData($title);
-            if ($movie === null) continue;
-            $movie->douban_rating = DoubanService::getDoubanRatingByImdbId($movie->imdb_id);
-            $movie->ranking = $idx + 1;
-            $movie->backdrop_url = TmdbService::getBackdropImageUrl(env('TMDB_API_KEY'), $movie->imdb_id);
-            $movie->save();
-        }
-    }
-
     public static function getTopTen() {
         $result = IMDB::topTen();
         for ($idx=0; $idx<count($result); $idx++) {
@@ -41,10 +19,33 @@ class MovieDataService
             self::setupBasicData($movie);
             $movie->douban_rating = DoubanService::getDoubanRatingByImdbId($movie->imdb_id);
             $movie->ranking = $idx + 1;
-            $movie->backdrop_url = TmdbService::getBackdropImageUrl(env('TMDB_API_KEY'), $movie->imdb_id);
+            $movie->backdrop_url = TMDB::getBackdropImageUrl(env('TMDB_API_KEY'), $movie->imdb_id);
             $movie->save();
         }
 
+    }
+
+    public static function searchMovie($title) {
+        $searchResult = TMDB::searchMovie(env('TMDB_API_KEY'),$title);
+        $searchResult = $searchResult['results'];
+        $ret = array();
+        foreach($searchResult as $result) {
+            $title = $result['original_title'];
+            $posterPath = TMDB::buildPosterFullPath($result['poster_path']);
+            $backdropPath = TMDB::buildBackdropFullPath($result['backdrop_path']);
+            $imdbId = TMDB::getImdbIdByMovieId(env('TMDB_API_KEY'), $result['id']);
+            $imdbRating = OmdbService::getImdbRatingByImdbId($imdbId);
+            $doubanRating = '0.0';//DoubanService::getDoubanRatingByImdbId($imdbId);
+            $ret[] = array(
+                'imdb_id'=>$imdbId,
+                'title'=>$title,
+                'poster_url'=>$posterPath,
+                'backdrop_url'=>$backdropPath,
+                'douban_rating' => $doubanRating,
+                'imdb_rating' => $imdbRating
+            );
+        }
+        return $ret;
     }
 
     private static function setupBasicData($movie)
@@ -58,6 +59,6 @@ class MovieDataService
     public static function getMovieBackdropUrl($imdbId, $size = 780)
     {
         $apiKey = env('TMDB_API_KEY');
-        return TmdbService::getBackdropImageUrl($imdbId, $size, $apiKey);
+        return TMDB::getBackdropImageUrl($imdbId, $size, $apiKey);
     }
 }

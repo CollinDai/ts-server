@@ -2,6 +2,7 @@
 
 use App\Models\Movie;
 use App\Models\Subtitle;
+use App\Services\MovieDataService;
 use App\Services\SubtitleDataService;
 use Log;
 
@@ -47,6 +48,10 @@ class TheaterSubtitleManager
             $subs = $subs->all();
         }
         return $subs;
+    }
+
+    public static function searchMovie($title) {
+        return MovieDataService::searchMovie($title);
     }
 
     public static function downloadSubtitle($subId)

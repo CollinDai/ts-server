@@ -30,6 +30,11 @@ class OmdbService {
         return json_decode($response, true);
     }
 
+	public static function getImdbRatingByImdbId($imdbId) {
+		$resp = self::searchByImdb($imdbId);
+		return $resp['imdbRating'];
+	}
+
 	private static function search($title, $year) {
 		$title = OmdbService::removeYearFromTitle($title);
 		$params = array(

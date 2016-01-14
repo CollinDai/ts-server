@@ -30,8 +30,8 @@ class MovieController extends ApiController
     }
 
     public function search(Request $request) {
-//        dd($request);
-        return "yes";
+        $query = $request['query'];
+        return  TheaterSubtitleManager::searchMovie($query);
     }
     /**
      * Show the form for creating a new resource.

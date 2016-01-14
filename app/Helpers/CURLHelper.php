@@ -53,7 +53,7 @@ class CURLHelper {
 	        CURLOPT_URL => $curlUrl, 
 	        CURLOPT_HEADER => 0, 
 	        CURLOPT_RETURNTRANSFER => TRUE, 
-	        CURLOPT_TIMEOUT => 15
+	        CURLOPT_TIMEOUT => 20
 	    ); 
 	    
 	    $ch = curl_init(); 
