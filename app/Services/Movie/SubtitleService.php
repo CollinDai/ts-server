@@ -16,9 +16,11 @@ class SubtitleService {
 			$this->token = Cache::get('OSToken');
 		} else {
     		$loginResp = $this->xmlrpc_client->call('LogIn', array($username, $password, $language, $useragent));
+            if ($loginResp['status'] === '506 Server under maintenance') return false;
     		$this->token = $loginResp['token'];
     		Cache::put('OSToken', $this->token, 15);
         }
+        return true;
 	}
 	public function getToken(){return $this->token;}
 

@@ -6,13 +6,14 @@ use App\Services\Movie\SubtitleService;
 class SubtitleDataService {
     public static function getSubtitle($imdbId, array $languages) {
         $subtitleService = new SubtitleService();
-        $subtitleService->login(
+        $loginResp = $subtitleService->login(
             env('OPENSUBTITLE_USERNAME'),
             env('OPENSUBTITLE_PASSWORD'),
             'en',
             env('OPENSUBTITLE_USERAGENT'));
-        $resp = $subtitleService->searchSubtitle($imdbId,$languages);
         $result = [];
+        if (!$loginResp) return $result;
+        $resp = $subtitleService->searchSubtitle($imdbId,$languages);
         if (empty($resp['data'])) {
             return $result;
         }
@@ -37,11 +38,12 @@ class SubtitleDataService {
 
     public static function downloadSubtitle($subId) {
         $subtitleService = new SubtitleService();
-        $subtitleService->login(
+        $loginResp = $subtitleService->login(
             env('OPENSUBTITLE_USERNAME'),
             env('OPENSUBTITLE_PASSWORD'),
             'en',
             env('OPENSUBTITLE_USERAGENT'));
+        if (!$loginResp) return '';
         $resp = $subtitleService->downloadSubtitle([$subId]);
         if ($resp !== '') {
             $sub = Subtitle::find($subId);
