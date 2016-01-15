@@ -1,7 +1,7 @@
 <?php namespace App\Services\Movie;
 
+use App\Helpers\MovieHelper;
 use Log;
-use \DateTime;
 use App\Helpers\CURLHelper as CURL;
 /**
  * TODO intelligently return the search result order by
@@ -64,12 +64,7 @@ class OmdbService {
 		if ($omdbResp['Released']==='N/A') {
 			return false;
 		} else {
-			$releaseDate = DateTime::createFromFormat('d M Y', $omdbResp['Released']);
-            $releaseDateStr = $releaseDate->format('Y-m-d');
-            $releaseYear = $releaseDate->format('Y');
-            $todayStr = date('Y-m-d');
-            $todayYear = date('Y');
-			return $releaseDateStr <= $todayStr && $releaseYear >= ($todayYear - 1);
+			return MovieHelper::isMovieJustReleased($omdbResp['Released'], 'd M Y');
 		}
 	}
 }

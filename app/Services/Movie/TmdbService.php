@@ -25,12 +25,12 @@ class TmdbService {
 
     }
 
-    public static function buildPosterFullPath($fileName, $size='w180') {
-        return self::$baseUrl . $size . '/' . $fileName;
+    public static function buildPosterFullPath($fileName, $size='w185') {
+        return self::$baseUrl . $size . $fileName;
     }
 
     public static function buildBackdropFullPath($fileName, $size='w780') {
-        return self::$baseUrl . $size . '/' . $fileName;
+        return self::$baseUrl . $size . $fileName;
     }
 
     public static function getImdbIdByMovieId($apiKey, $movieId){

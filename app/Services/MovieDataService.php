@@ -30,12 +30,13 @@ class MovieDataService
         $searchResult = $searchResult['results'];
         $ret = array();
         foreach($searchResult as $result) {
+            if (!self::isGoodMovie($result)) continue;
             $title = $result['original_title'];
             $posterPath = TMDB::buildPosterFullPath($result['poster_path']);
             $backdropPath = TMDB::buildBackdropFullPath($result['backdrop_path']);
             $imdbId = TMDB::getImdbIdByMovieId(env('TMDB_API_KEY'), $result['id']);
             $imdbRating = OmdbService::getImdbRatingByImdbId($imdbId);
-            $doubanRating = '0.0';//DoubanService::getDoubanRatingByImdbId($imdbId);
+            $doubanRating = 'N/A';//DoubanService::getDoubanRatingByImdbId($imdbId);
             $ret[] = array(
                 'imdb_id'=>$imdbId,
                 'title'=>$title,
@@ -46,6 +47,20 @@ class MovieDataService
             );
         }
         return $ret;
+    }
+
+    private static function isGoodMovie($tmdbResp) {
+        if ($tmdbResp['poster_path'] === null) {
+            return false;
+        } else if ($tmdbResp['backdrop_path'] === null) {
+            return false;
+        } else if ($tmdbResp['popularity'] < 1.7) {
+            return false;
+        } else if ($tmdbResp['vote_count'] < 10) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private static function setupBasicData($movie)
