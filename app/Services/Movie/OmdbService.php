@@ -24,7 +24,8 @@ class OmdbService {
         $params = array(
             'i'=>$imdbId,
             'r'=>'json',
-            'plot'=>'short'
+            'plot'=>'short',
+			'tomatoes' =>'true'
         );
         $response = CURL::get(self::$URL, $params);
         return json_decode($response, true);

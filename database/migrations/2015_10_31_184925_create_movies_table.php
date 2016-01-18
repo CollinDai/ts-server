@@ -13,15 +13,16 @@ class CreateMoviesTable extends Migration
     public function up()
     {
         Schema::create('movies', function (Blueprint $table) {
-            // $table->increments('id');
-            $table->string('imdb_id')->primary();
+            $table->increments('id');
+            $table->string('imdb_id');
             $table->string('title');
             $table->string('short_info');
-            $table->string('douban_rating');
-            $table->string('imdb_rating');
+            $table->string('douban_rating')->nullable();
+            $table->string('imdb_rating')->nullable();
+            $table->string('tomato_meter')->nullable();
             $table->string('poster_url');
             $table->string('backdrop_url');
-            $table->integer('ranking');
+            $table->integer('ranking')->nullable();
             $table->timestamps();
         });
     }

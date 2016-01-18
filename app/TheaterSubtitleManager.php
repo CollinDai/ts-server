@@ -18,7 +18,7 @@ class TheaterSubtitleManager
                 'title' => $m['title'],
                 'poster_url' => $m['poster_url'],
                 'backdrop_url' => $m['backdrop_url'],
-                'douban_rating' => $m['douban_rating'],
+                'tomato_meter' => $m['tomato_meter'],
                 'imdb_rating' => $m['imdb_rating']
             );
         }
