@@ -13,8 +13,8 @@ class CreateSubtitlesTable extends Migration
     public function up()
     {
         Schema::create('subtitles', function (Blueprint $table) {
-            // $table->increments('id');
-            $table->string('file_id')->primary();
+            $table->increments('id');
+            $table->string('file_id');
             $table->string('imdb_id');
             $table->string('file_name');
             $table->string('duration');
