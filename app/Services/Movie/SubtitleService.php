@@ -25,11 +25,11 @@ class SubtitleService {
 	public function getToken(){return $this->token;}
 
     /**
-     * Search subtitle from OpenSubtitle.com 
+     * Search subtitle from OpenSubtitles.org
      * based on IMDb ID without leading "tt".
      * @param  integer $imdbId the integer following the leading character.
      * @param string $language split by comma if multiple
-     * @return string the zip download link
+     * @return array all data returned by opensubtitles.org
      */
 	public function searchSubtitle($imdbId, array $languages) {
 		$imdbId = $this->validateIMDbID($imdbId);

@@ -62,10 +62,6 @@ class SubtitleController extends ApiController
         if ($request->has('lang')) {
             $languages = explode(',',$request->input('lang'));
         }
-        $raw = FALSE;
-        if ($request->has('raw')) {
-            $raw = $request->input('raw');
-        }
         $resp = TSM::getSubtitle($imdbId, $languages);
         return $this->respond($resp);
     }

@@ -19,7 +19,7 @@ class ImdbBoxOfficeService {
         $resultArr = array();
         for ($idx=0; $idx<$nodes->length; $idx++) {
             $domNode = $nodes->item($idx);
-            $title = $domNode->nodeValue;
+            $title = trim($domNode->nodeValue);
             $imdbId = self::extractImdb($domNode->attributes->getNamedItem('href')->nodeValue);
             if ($imdbId !== null) {
                 $resultArr[] = array('title'=>$title, 'imdbId'=>$imdbId);

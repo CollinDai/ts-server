@@ -30,8 +30,10 @@ class SubtitleDataService {
             $s->language = $sub['LanguageName'];
             $s->ISO639 = $sub['ISO639'];
             $s->ISO639_2 = $sub['SubLanguageID'];
-            $s->save();
-            $result[] = $s;
+            if (self::isValidSrt($s)) {
+                $s->save();
+                $result[] = $s;
+            }
         }
         return $result;
     }
@@ -51,5 +53,10 @@ class SubtitleDataService {
             $sub->save();
         }
         return $resp;
+    }
+
+    private static function isValidSrt($subData) {
+        return ends_with(strtolower($subData->file_name), '.srt') &&
+                !empty($subData->duration);
     }
 }

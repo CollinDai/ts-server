@@ -27,7 +27,7 @@ class TheaterSubtitleManager
 
     public static function getSubtitle($imdbId, $languages = [])
     {
-        $subs = Subtitle::select(
+        $subsBuilder = Subtitle::select(
             'imdb_id',
             'file_id',
             'file_name',
@@ -39,15 +39,14 @@ class TheaterSubtitleManager
             'ISO639'
         )->where('imdb_id', $imdbId);
         if (!empty($languages)) {
-            $subs = $subs->whereIn('ISO639_2', $languages);
+            $subsBuilder = $subsBuilder->whereIn('ISO639_2', $languages);
         }
-        $subs = $subs->get();
-        if ($subs->isEmpty()) {
-            $subs = SubtitleDataService::getSubtitle($imdbId, $languages);
+        $subsCollection = $subsBuilder->get();
+        if ($subsCollection->isEmpty()) {
+            return SubtitleDataService::getSubtitle($imdbId, $languages);
         } else {
-            $subs = $subs->all();
+            return $subsCollection->all();
         }
-        return $subs;
     }
 
     public static function searchMovie($title) {

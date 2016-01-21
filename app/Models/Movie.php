@@ -8,5 +8,4 @@ class Movie extends Model
 {
     // $table = 'movies';
     protected $fillable = ['imdb_id'];
-    protected $primaryKey = 'imdb_id';
 }
