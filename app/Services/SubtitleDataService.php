@@ -48,7 +48,7 @@ class SubtitleDataService {
         if (!$loginResp) return '';
         $resp = $subtitleService->downloadSubtitle([$subId]);
         if ($resp !== '') {
-            $sub = Subtitle::find($subId);
+            $sub = Subtitle::where('file_id', $subId)->first();
             $sub->content = $resp;
             $sub->save();
         }
